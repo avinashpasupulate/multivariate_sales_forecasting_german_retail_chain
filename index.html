@@ -11957,6 +11957,9 @@ raw_data
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><h3>Description of Dataset</h3></p>
+<hr>
+
 <p>Data fields
 Most of the fields are self-explanatory. The following are descriptions for those that aren't.</p>
 <ul>
@@ -11994,6 +11997,20 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><br>
+<br></p>
+<p><h3>Identifying regions using state and school holidays</h3></p>
+<hr>
+
+<p>Using union and intersections of german state and school holidays to identigy regions</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[14]:</div>
@@ -12015,7 +12032,6 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#created date_holiday_master with list of holidays</span>
-<span class="c1">#acquired from https://www.timeanddate.com/holidays/germany/</span>
 <span class="c1">#merging the train dataset with the date holiday master created with excel</span>
 <span class="n">sales</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Date&#39;</span><span class="p">:</span><span class="s1">&#39;date&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">date_master</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;date &#39;</span><span class="p">:</span><span class="s1">&#39;date&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -12086,6 +12102,16 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>mapping all regions to remove unwanted characters. <br>
+<em>regex could have been used here to replace certain region names</em></p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -12265,7 +12291,9 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 <div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">hol_agg</span><span class="o">.</span><span class="n">Store</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">hol_agg</span><span class="o">.</span><span class="n">regions_observed</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#plotting number os unique stores in initial merge </span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">hol_agg</span><span class="o">.</span><span class="n">Store</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">hol_agg</span><span class="o">.</span><span class="n">regions_observed</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12480,7 +12508,8 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 <div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">city</span> <span class="o">=</span> <span class="p">[</span><span class="n">SN</span><span class="p">,</span> <span class="n">ST</span><span class="p">,</span> <span class="n">BW</span><span class="p">,</span> <span class="n">BY</span><span class="p">,</span> <span class="n">HE</span><span class="p">,</span> <span class="n">SL</span><span class="p">,</span> <span class="n">NW_RP</span><span class="p">,</span> <span class="n">BB_MV_TH</span><span class="p">,</span> <span class="n">BE_HB_HH_NI_SH</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#checking if there is overlapping between current classification</span>
+<span class="n">city</span> <span class="o">=</span> <span class="p">[</span><span class="n">SN</span><span class="p">,</span> <span class="n">ST</span><span class="p">,</span> <span class="n">BW</span><span class="p">,</span> <span class="n">BY</span><span class="p">,</span> <span class="n">HE</span><span class="p">,</span> <span class="n">SL</span><span class="p">,</span> <span class="n">NW_RP</span><span class="p">,</span> <span class="n">BB_MV_TH</span><span class="p">,</span> <span class="n">BE_HB_HH_NI_SH</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">city</span><span class="p">)):</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">city</span><span class="p">)):</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">city</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">Store</span><span class="p">,</span> <span class="n">city</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">Store</span><span class="p">):</span>
@@ -12561,7 +12590,6 @@ BE_HB_HH_NI_SH BE_HB_HH_NI_SH True
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#further identifying regions for above clusters using the school holiday information</span>
-<span class="c1">#acquired from https://www.tuxx.uk/countries/germany/schoolholidays/2018/</span>
 <span class="n">school_hols</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s1">&#39;/data/external_data/schol_out_trans.xlsx&#39;</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s1">&#39;transformed_hols&#39;</span><span class="p">)</span>
 </pre></div>
 
@@ -12700,6 +12728,8 @@ BE_HB_HH_NI_SH</p>
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#checking if all stores from a region have holiday on the same day</span>
 <span class="n">train</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">train</span><span class="o">.</span><span class="n">Store</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">HE</span><span class="o">.</span><span class="n">Store</span><span class="p">)]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">)[</span><span class="s1">&#39;SchoolHoliday&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+
+<span class="c1"># 0 denotes no holidays for 749 stores and all have holidays on same day</span>
 </pre></div>
 
 </div>
@@ -12876,6 +12906,8 @@ Name: SchoolHoliday, dtype: int64</pre>
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#some stores have holidays on different so probably belong to different regions</span>
 <span class="n">train</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">train</span><span class="o">.</span><span class="n">Store</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">NW_RP</span><span class="o">.</span><span class="n">Store</span><span class="p">)]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">)[</span><span class="s1">&#39;SchoolHoliday&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+
+<span class="c1">#there is overlapping of holidays from different regions</span>
 </pre></div>
 
 </div>
@@ -13140,7 +13172,8 @@ Name: SchoolHoliday, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[55]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">city</span> <span class="o">=</span> <span class="p">[</span><span class="n">SN</span><span class="p">,</span> <span class="n">ST</span><span class="p">,</span> <span class="n">BW</span><span class="p">,</span> <span class="n">BY</span><span class="p">,</span> <span class="n">HE</span><span class="p">,</span> <span class="n">NW</span><span class="p">,</span> <span class="n">RP</span><span class="p">,</span> <span class="n">TH</span><span class="p">,</span> <span class="n">BE</span><span class="p">,</span> <span class="n">HB</span><span class="p">,</span> <span class="n">HH</span><span class="p">,</span> <span class="n">NI</span><span class="p">,</span> <span class="n">SH</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#checking if there is no overlapping of mapped regions (True denotes there is no overlapping of stores)</span>
+<span class="n">city</span> <span class="o">=</span> <span class="p">[</span><span class="n">SN</span><span class="p">,</span> <span class="n">ST</span><span class="p">,</span> <span class="n">BW</span><span class="p">,</span> <span class="n">BY</span><span class="p">,</span> <span class="n">HE</span><span class="p">,</span> <span class="n">NW</span><span class="p">,</span> <span class="n">RP</span><span class="p">,</span> <span class="n">TH</span><span class="p">,</span> <span class="n">BE</span><span class="p">,</span> <span class="n">HB</span><span class="p">,</span> <span class="n">HH</span><span class="p">,</span> <span class="n">NI</span><span class="p">,</span> <span class="n">SH</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">city</span><span class="p">)):</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">city</span><span class="p">)):</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">city</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">Store</span><span class="p">,</span> <span class="n">city</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">Store</span><span class="p">):</span>
@@ -13507,7 +13540,17 @@ SH SH True
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Mapping week wise google trend data to the sales dataset downloaded from</p>
+<p><br></p>
+<p><h3>Acquiring and including Google trends data</h3></p>
+<hr>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Mapping week wise historical google trend data (SVI - Search volume Index) to the sales dataset downloaded from</p>
 <p><a href="https://trends.google.com/trends/explore?cat=18&amp;date=2013-01-01%202017-01-01&amp;geo=DE&amp;q=rossmann">https://trends.google.com/trends/explore?cat=18&amp;date=2013-01-01%202017-01-01&amp;geo=DE&amp;q=rossmann</a></p>
 
 </div>
@@ -13971,15 +14014,19 @@ SH SH True
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Including other exogenous data from two events</p>
+<p>Including other exogenous data from two events ,</p>
 
 <pre><code>1. World Cup 2014 (major sport event)
 2. European Immigrant Crisis (supplies for immigrants, rioters etc)
+3. Macroeconomic variable - Consumer Price Index for Germany
 
 </code></pre>
-<p><a href="https://en.wikipedia.org/wiki/Timeline_of_German_history">https://en.wikipedia.org/wiki/Timeline_of_German_history</a></p>
+<p><br>
+<br>
+List of notable events in german history;
+<a href="https://en.wikipedia.org/wiki/Timeline_of_German_history">https://en.wikipedia.org/wiki/Timeline_of_German_history</a></p>
 <p>Link to asylum application data by month: <a href="http://appsso.eurostat.ec.europa.eu/nui/show.do">http://appsso.eurostat.ec.europa.eu/nui/show.do</a></p>
-<p>Link to football worldcup dates:</p>
+<p>Link to football worldcup dates: <a href="https://www.worldfootball.net/all_matches/wm-2014-in-brasilien/">https://www.worldfootball.net/all_matches/wm-2014-in-brasilien/</a></p>
 
 </div>
 </div>
@@ -14815,7 +14862,9 @@ SH SH True
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>also including region wise temperature data for the 3 years</p>
+<p><h3>Acquiring temperature/weather data</h3></p>
+<p><hr></p>
+<p><ul><li>searching with addresses and nearest weather stations with historical information</p>
 
 </div>
 </div>
@@ -15010,17 +15059,32 @@ SH SH True
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>h = geocoders.Nominatim()
-for index, row in weather_stn.iterrows():
-    res = h.reverse(query=[row['lat'], row['lon']])
-    print(res[0])</p>
-
+<p><br></p>
+<p><h3>Objective/To Do :</h3></p>
+<p><hr></p>
+<ul><li>Finding what stations lie within which region so that they can be mapped to their respective station</ul>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[87]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#h = geocoders.Nominatim()</span>
+<span class="c1">#for index, row in weather_stn.iterrows():</span>
+<span class="c1">#    res = h.reverse(query=[row[&#39;lat&#39;], row[&#39;lon&#39;]])</span>
+<span class="c1">#    print(res[0])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[88]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>jupyter nbconvert --to html ads_creation.ipynb
@@ -15042,7 +15106,7 @@ for index, row in weather_stn.iterrows():
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook ads_creation.ipynb to html
-[NbConvertApp] Writing 419188 bytes to ads_creation.html
+[NbConvertApp] Writing 421277 bytes to ads_creation.html
 </pre>
 </div>
 </div>
