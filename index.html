@@ -11777,7 +11777,7 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <div style="background-color:#7a1400;height:60px;padding-top:7px;">
 <h3 align=center style="color:white">
-Multivariate Sales Forecasting - German Retail Chain
+Multivariate Sales Forecasting - German Retail Chain - Analytical Dataset Creation
 </h3> 
 </div>
 </div>
@@ -11861,21 +11861,26 @@ This notebook is the first of the several notebooks listed below;</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[851]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">urllib3</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">calendar</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">openweather</span>
-<span class="kn">from</span> <span class="nn">geopy</span> <span class="k">import</span> <span class="n">geocoders</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">geopy</span> <span class="k">import</span> <span class="n">geocoders</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span> <span class="k">as</span> <span class="n">bs</span>
 <span class="kn">from</span> <span class="nn">pytrends.request</span> <span class="k">import</span> <span class="n">TrendReq</span>
+
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
@@ -11888,7 +11893,7 @@ This notebook is the first of the several notebooks listed below;</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[852]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
@@ -11901,7 +11906,7 @@ This notebook is the first of the several notebooks listed below;</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[853]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#list all files in data folder</span>
@@ -11935,7 +11940,7 @@ raw_data
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[854]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#importing all files, considering onle two files test </span>
@@ -11985,7 +11990,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[855]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#creating working copy of the train data</span>
@@ -12013,7 +12018,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[856]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#replacing categories in StateHoliday column </span>
@@ -12028,7 +12033,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[857]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#created date_holiday_master with list of holidays</span>
@@ -12046,7 +12051,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[858]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#getting only required columns</span>
@@ -12064,7 +12069,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[859]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#recoding categories in the regions_observed column</span>
@@ -12081,7 +12086,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[17]:</div>
+<div class="prompt output_prompt">Out[859]:</div>
 
 
 
@@ -12115,7 +12120,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[860]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">state_map</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;nan&#39;</span><span class="p">:</span><span class="kc">None</span><span class="p">,</span>
@@ -12145,7 +12150,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[861]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#categories in regions_observed after recoding</span>
@@ -12162,7 +12167,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[19]:</div>
+<div class="prompt output_prompt">Out[861]:</div>
 
 
 
@@ -12183,7 +12188,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[862]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#subsetting data with only stores and regions_observed columns</span>
@@ -12200,7 +12205,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[863]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#un-processed aggregation with overlapping regions</span>
@@ -12217,7 +12222,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[21]:</div>
+<div class="prompt output_prompt">Out[863]:</div>
 
 
 
@@ -12288,44 +12293,21 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[864]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#plotting number os unique stores in initial merge </span>
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">hol_agg</span><span class="o">.</span><span class="n">Store</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">hol_agg</span><span class="o">.</span><span class="n">regions_observed</span><span class="p">)</span>
+<span class="c1">#ax = sns.barplot(x=hol_agg.Store, y=hol_agg.regions_observed)</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
-"
->
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[865]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#creating subsets with the region clusters for finding intersect and union of the datasets</span>
@@ -12343,7 +12325,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[866]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">SN</span> <span class="o">=</span> <span class="n">state_hol_sub</span><span class="p">[</span><span class="n">state_hol_sub</span><span class="o">.</span><span class="n">regions_observed</span><span class="o">==</span><span class="s1">&#39;SN&#39;</span><span class="p">]</span>
@@ -12356,7 +12338,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[867]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">BY</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">reg_1</span><span class="o">.</span><span class="n">Store</span><span class="p">,</span> <span class="n">reg_2</span><span class="o">.</span><span class="n">Store</span><span class="p">))</span>
@@ -12370,7 +12352,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[868]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">BW_ST</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">setxor1d</span><span class="p">(</span><span class="n">reg_1</span><span class="o">.</span><span class="n">Store</span><span class="p">,</span> <span class="n">BY</span><span class="o">.</span><span class="n">Store</span><span class="p">))</span>
@@ -12386,7 +12368,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[869]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ST</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">setxor1d</span><span class="p">(</span><span class="n">BW</span><span class="o">.</span><span class="n">Store</span><span class="p">,</span> <span class="n">BW_ST</span><span class="o">.</span><span class="n">Store</span><span class="p">))</span>
@@ -12400,7 +12382,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[870]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">SL</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">setxor1d</span><span class="p">(</span><span class="n">reg_2</span><span class="o">.</span><span class="n">Store</span><span class="p">,</span> <span class="n">BY</span><span class="o">.</span><span class="n">Store</span><span class="p">))</span>
@@ -12414,7 +12396,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[871]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#for some reason HE also seems to contain SN, removing from the subset</span>
@@ -12431,7 +12413,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[872]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">NW_RP_1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">setxor1d</span><span class="p">(</span><span class="n">reg_3</span><span class="o">.</span><span class="n">Store</span><span class="p">,</span> <span class="n">BW</span><span class="o">.</span><span class="n">Store</span><span class="p">))</span>
@@ -12449,7 +12431,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In&nbsp;[873]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">BB_MV_TH_1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">setxor1d</span><span class="p">(</span><span class="n">reg_5</span><span class="o">.</span><span class="n">Store</span><span class="p">,</span> <span class="n">SN</span><span class="o">.</span><span class="n">Store</span><span class="p">))</span>
@@ -12465,7 +12447,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[874]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#finding the stores all over germany except for the ones listed above</span>
@@ -12483,7 +12465,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In&nbsp;[875]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#naming dataframes and looking for common values</span>
@@ -12505,7 +12487,7 @@ Most of the fields are self-explanatory. The following are descriptions for thos
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[876]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#checking if there is overlapping between current classification</span>
@@ -12549,7 +12531,7 @@ BE_HB_HH_NI_SH BE_HB_HH_NI_SH True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In&nbsp;[877]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#adding columns in subsets with mapped region</span>
@@ -12571,7 +12553,7 @@ BE_HB_HH_NI_SH BE_HB_HH_NI_SH True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="prompt input_prompt">In&nbsp;[878]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#combining all store-region mapping subsets</span>
@@ -12586,7 +12568,7 @@ BE_HB_HH_NI_SH BE_HB_HH_NI_SH True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="prompt input_prompt">In&nbsp;[879]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#further identifying regions for above clusters using the school holiday information</span>
@@ -12600,7 +12582,7 @@ BE_HB_HH_NI_SH BE_HB_HH_NI_SH True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="prompt input_prompt">In&nbsp;[880]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">school_hols</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -12616,7 +12598,7 @@ BE_HB_HH_NI_SH BE_HB_HH_NI_SH True
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[38]:</div>
+<div class="prompt output_prompt">Out[880]:</div>
 
 
 
@@ -12723,7 +12705,7 @@ BE_HB_HH_NI_SH</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In&nbsp;[881]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#checking if all stores from a region have holiday on the same day</span>
@@ -12742,7 +12724,7 @@ BE_HB_HH_NI_SH</p>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[39]:</div>
+<div class="prompt output_prompt">Out[881]:</div>
 
 
 
@@ -12761,7 +12743,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="prompt input_prompt">In&nbsp;[882]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">train</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">train</span><span class="o">.</span><span class="n">Store</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">BW</span><span class="o">.</span><span class="n">Store</span><span class="p">)]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">)[</span><span class="s1">&#39;SchoolHoliday&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
@@ -12777,7 +12759,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[40]:</div>
+<div class="prompt output_prompt">Out[882]:</div>
 
 
 
@@ -12796,7 +12778,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="prompt input_prompt">In&nbsp;[883]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">train</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">train</span><span class="o">.</span><span class="n">Store</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">BY</span><span class="o">.</span><span class="n">Store</span><span class="p">)]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">)[</span><span class="s1">&#39;SchoolHoliday&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
@@ -12812,7 +12794,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[41]:</div>
+<div class="prompt output_prompt">Out[883]:</div>
 
 
 
@@ -12831,7 +12813,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="prompt input_prompt">In&nbsp;[884]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">train</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">train</span><span class="o">.</span><span class="n">Store</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">SN</span><span class="o">.</span><span class="n">Store</span><span class="p">)]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">)[</span><span class="s1">&#39;SchoolHoliday&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
@@ -12847,7 +12829,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[42]:</div>
+<div class="prompt output_prompt">Out[884]:</div>
 
 
 
@@ -12866,7 +12848,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[43]:</div>
+<div class="prompt input_prompt">In&nbsp;[885]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">train</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">train</span><span class="o">.</span><span class="n">Store</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">ST</span><span class="o">.</span><span class="n">Store</span><span class="p">)]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">)[</span><span class="s1">&#39;SchoolHoliday&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
@@ -12882,7 +12864,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[43]:</div>
+<div class="prompt output_prompt">Out[885]:</div>
 
 
 
@@ -12901,7 +12883,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="prompt input_prompt">In&nbsp;[886]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#some stores have holidays on different so probably belong to different regions</span>
@@ -12920,7 +12902,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[44]:</div>
+<div class="prompt output_prompt">Out[886]:</div>
 
 
 
@@ -12941,7 +12923,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[45]:</div>
+<div class="prompt input_prompt">In&nbsp;[887]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#stores in this category may belong to the same region</span>
@@ -12958,7 +12940,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[45]:</div>
+<div class="prompt output_prompt">Out[887]:</div>
 
 
 
@@ -12977,7 +12959,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[46]:</div>
+<div class="prompt input_prompt">In&nbsp;[888]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#checking if there is a school holiday which is mutually exclusive</span>
@@ -12998,7 +12980,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[47]:</div>
+<div class="prompt input_prompt">In&nbsp;[889]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#this category has stores from multiple regions</span>
@@ -13015,7 +12997,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[47]:</div>
+<div class="prompt output_prompt">Out[889]:</div>
 
 
 
@@ -13048,7 +13030,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[48]:</div>
+<div class="prompt input_prompt">In&nbsp;[890]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#l = [&#39;BE&#39;,&#39;HB&#39;,&#39;HH&#39;,&#39;NI&#39;,&#39;SH&#39;]</span>
@@ -13062,7 +13044,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[49]:</div>
+<div class="prompt input_prompt">In&nbsp;[891]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#HE region seems to have a holiday on 26/10/2013</span>
@@ -13076,7 +13058,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[50]:</div>
+<div class="prompt input_prompt">In&nbsp;[892]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#train.loc[train.Date==&#39;2015-03-02&#39;].loc[train.Store.isin(BE_HB_HH_NI_SH)].loc[train.SchoolHoliday==1,&#39;Store&#39;].values</span>
@@ -13094,7 +13076,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[51]:</div>
+<div class="prompt input_prompt">In&nbsp;[893]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">SH</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">train</span><span class="o">.</span><span class="n">Date</span><span class="o">==</span><span class="s1">&#39;2015-04-17&#39;</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">Store</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">BE_HB_NI_SH</span><span class="p">))</span><span class="o">&amp;</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">SchoolHoliday</span><span class="o">==</span><span class="mi">1</span><span class="p">),</span><span class="s1">&#39;Store&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
@@ -13110,7 +13092,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[52]:</div>
+<div class="prompt input_prompt">In&nbsp;[894]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">BE</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">train</span><span class="o">.</span><span class="n">Date</span><span class="o">==</span><span class="s1">&#39;2015-03-25&#39;</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">Store</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">BE_HB_NI</span><span class="p">))</span><span class="o">&amp;</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">SchoolHoliday</span><span class="o">==</span><span class="mi">1</span><span class="p">),</span><span class="s1">&#39;Store&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
@@ -13126,7 +13108,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[53]:</div>
+<div class="prompt input_prompt">In&nbsp;[895]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">HB</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">train</span><span class="o">.</span><span class="n">Store</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">HB_NI</span><span class="p">))</span><span class="o">&amp;</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">Date</span><span class="o">==</span><span class="s1">&#39;2014-09-10&#39;</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">SchoolHoliday</span><span class="o">==</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;Store&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
@@ -13143,7 +13125,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="prompt input_prompt">In&nbsp;[896]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#naming dataframes and looking for common values</span>
@@ -13169,7 +13151,7 @@ Name: SchoolHoliday, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[55]:</div>
+<div class="prompt input_prompt">In&nbsp;[897]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#checking if there is no overlapping of mapped regions (True denotes there is no overlapping of stores)</span>
@@ -13217,7 +13199,7 @@ SH SH True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[56]:</div>
+<div class="prompt input_prompt">In&nbsp;[898]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#adding columns in subsets with mapped region</span>
@@ -13243,7 +13225,7 @@ SH SH True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[57]:</div>
+<div class="prompt input_prompt">In&nbsp;[899]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#combining all store-region mapping subsets</span>
@@ -13258,7 +13240,7 @@ SH SH True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="prompt input_prompt">In&nbsp;[900]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#processed mapping sums to 1115 stores</span>
@@ -13275,7 +13257,7 @@ SH SH True
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[58]:</div>
+<div class="prompt output_prompt">Out[900]:</div>
 
 
 
@@ -13376,7 +13358,7 @@ SH SH True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[59]:</div>
+<div class="prompt input_prompt">In&nbsp;[901]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">train</span><span class="o">.</span><span class="n">Store</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">store_reg</span><span class="o">.</span><span class="n">Store</span><span class="p">),</span> <span class="s1">&#39;Store&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
@@ -13392,7 +13374,7 @@ SH SH True
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[59]:</div>
+<div class="prompt output_prompt">Out[901]:</div>
 
 
 
@@ -13409,7 +13391,7 @@ SH SH True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[60]:</div>
+<div class="prompt input_prompt">In&nbsp;[902]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">store_reg</span><span class="p">[</span><span class="s1">&#39;Store&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">())</span>
@@ -13425,7 +13407,7 @@ SH SH True
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[60]:</div>
+<div class="prompt output_prompt">Out[902]:</div>
 
 
 
@@ -13442,7 +13424,7 @@ SH SH True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[61]:</div>
+<div class="prompt input_prompt">In&nbsp;[903]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">store_reg</span><span class="p">[[</span><span class="s1">&#39;Store&#39;</span><span class="p">,</span> <span class="s1">&#39;mapped_region&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -13458,7 +13440,7 @@ SH SH True
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[61]:</div>
+<div class="prompt output_prompt">Out[903]:</div>
 
 
 
@@ -13524,7 +13506,7 @@ SH SH True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[62]:</div>
+<div class="prompt input_prompt">In&nbsp;[904]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sales</span> <span class="o">=</span> <span class="n">sales</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">15</span><span class="p">]</span>
@@ -13558,7 +13540,7 @@ SH SH True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[63]:</div>
+<div class="prompt input_prompt">In&nbsp;[905]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#getting google trend information</span>
@@ -13585,7 +13567,7 @@ SH SH True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[64]:</div>
+<div class="prompt input_prompt">In&nbsp;[906]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ross_trend</span> <span class="o">=</span> <span class="n">ross_trend</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()[[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="s1">&#39;rossmann&#39;</span><span class="p">]]</span>
@@ -13608,7 +13590,7 @@ SH SH True
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[64]:</div>
+<div class="prompt output_prompt">Out[906]:</div>
 
 
 
@@ -13641,35 +13623,35 @@ SH SH True
     <tr>
       <th>0</th>
       <td>2013-01-06</td>
-      <td>19</td>
+      <td>33</td>
       <td>2013</td>
       <td>1</td>
     </tr>
     <tr>
       <th>1</th>
       <td>2013-01-13</td>
-      <td>7</td>
+      <td>17</td>
       <td>2013</td>
       <td>2</td>
     </tr>
     <tr>
       <th>2</th>
       <td>2013-01-20</td>
-      <td>14</td>
+      <td>18</td>
       <td>2013</td>
       <td>3</td>
     </tr>
     <tr>
       <th>3</th>
       <td>2013-01-27</td>
-      <td>29</td>
+      <td>30</td>
       <td>2013</td>
       <td>4</td>
     </tr>
     <tr>
       <th>4</th>
       <td>2013-02-03</td>
-      <td>16</td>
+      <td>8</td>
       <td>2013</td>
       <td>5</td>
     </tr>
@@ -13686,7 +13668,7 @@ SH SH True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[65]:</div>
+<div class="prompt input_prompt">In&nbsp;[907]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sales</span><span class="p">[</span><span class="s1">&#39;trend_key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sales</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;-&#39;</span><span class="o">+</span><span class="n">sales</span><span class="p">[</span><span class="s1">&#39;iso_weeknum&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
@@ -13705,7 +13687,7 @@ SH SH True
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[65]:</div>
+<div class="prompt output_prompt">Out[907]:</div>
 
 
 
@@ -13739,7 +13721,7 @@ SH SH True
     <tr>
       <th>0</th>
       <td>2013-01-06</td>
-      <td>19</td>
+      <td>33</td>
       <td>2013</td>
       <td>1</td>
       <td>2013-1</td>
@@ -13747,7 +13729,7 @@ SH SH True
     <tr>
       <th>1</th>
       <td>2013-01-13</td>
-      <td>7</td>
+      <td>17</td>
       <td>2013</td>
       <td>2</td>
       <td>2013-2</td>
@@ -13755,7 +13737,7 @@ SH SH True
     <tr>
       <th>2</th>
       <td>2013-01-20</td>
-      <td>14</td>
+      <td>18</td>
       <td>2013</td>
       <td>3</td>
       <td>2013-3</td>
@@ -13763,7 +13745,7 @@ SH SH True
     <tr>
       <th>3</th>
       <td>2013-01-27</td>
-      <td>29</td>
+      <td>30</td>
       <td>2013</td>
       <td>4</td>
       <td>2013-4</td>
@@ -13771,7 +13753,7 @@ SH SH True
     <tr>
       <th>4</th>
       <td>2013-02-03</td>
-      <td>16</td>
+      <td>8</td>
       <td>2013</td>
       <td>5</td>
       <td>2013-5</td>
@@ -13789,7 +13771,7 @@ SH SH True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[66]:</div>
+<div class="prompt input_prompt">In&nbsp;[908]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ross_trend</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;date_t&#39;</span><span class="p">,</span> <span class="s1">&#39;google_svi&#39;</span><span class="p">,</span> <span class="s1">&#39;year_t&#39;</span><span class="p">,</span> <span class="s1">&#39;week_num_t&#39;</span><span class="p">,</span> <span class="s1">&#39;trend_key&#39;</span><span class="p">]</span>
@@ -13802,7 +13784,7 @@ SH SH True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[67]:</div>
+<div class="prompt input_prompt">In&nbsp;[909]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#mapping in google trends data by week number</span>
@@ -13816,7 +13798,7 @@ SH SH True
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[68]:</div>
+<div class="prompt input_prompt">In&nbsp;[910]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sales</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -13832,7 +13814,7 @@ SH SH True
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[68]:</div>
+<div class="prompt output_prompt">Out[910]:</div>
 
 
 
@@ -13899,7 +13881,7 @@ SH SH True
       <td>HE</td>
       <td>2015-31</td>
       <td>2015-08-02</td>
-      <td>45</td>
+      <td>41</td>
       <td>2015</td>
       <td>31</td>
     </tr>
@@ -13923,7 +13905,7 @@ SH SH True
       <td>HE</td>
       <td>2015-31</td>
       <td>2015-08-02</td>
-      <td>45</td>
+      <td>41</td>
       <td>2015</td>
       <td>31</td>
     </tr>
@@ -13947,7 +13929,7 @@ SH SH True
       <td>TH</td>
       <td>2015-31</td>
       <td>2015-08-02</td>
-      <td>45</td>
+      <td>41</td>
       <td>2015</td>
       <td>31</td>
     </tr>
@@ -13971,7 +13953,7 @@ SH SH True
       <td>TH</td>
       <td>2015-31</td>
       <td>2015-08-02</td>
-      <td>45</td>
+      <td>41</td>
       <td>2015</td>
       <td>31</td>
     </tr>
@@ -13995,7 +13977,7 @@ SH SH True
       <td>NW</td>
       <td>2015-31</td>
       <td>2015-08-02</td>
-      <td>45</td>
+      <td>41</td>
       <td>2015</td>
       <td>31</td>
     </tr>
@@ -14033,7 +14015,7 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[69]:</div>
+<div class="prompt input_prompt">In&nbsp;[911]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#including all dates (maybe provide extra weight/flag to days before and after germany has played)</span>
@@ -14058,7 +14040,7 @@ List of notable events in german history;
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[69]:</div>
+<div class="prompt output_prompt">Out[911]:</div>
 
 
 
@@ -14136,7 +14118,7 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[70]:</div>
+<div class="prompt input_prompt">In&nbsp;[912]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#merging with the dataset</span>
@@ -14152,7 +14134,7 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[71]:</div>
+<div class="prompt input_prompt">In&nbsp;[913]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#importing asylum applicants in germany for 2013, 2014, 2015</span>
@@ -14170,7 +14152,7 @@ List of notable events in german history;
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[71]:</div>
+<div class="prompt output_prompt">Out[913]:</div>
 
 
 
@@ -14242,7 +14224,7 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[72]:</div>
+<div class="prompt input_prompt">In&nbsp;[914]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">dlab1</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GEO&#39;</span><span class="p">,</span> <span class="s1">&#39;CITIZEN&#39;</span><span class="p">,</span> <span class="s1">&#39;SEX&#39;</span><span class="p">,</span> <span class="s1">&#39;AGE&#39;</span><span class="p">,</span> <span class="s1">&#39;ASYL_APP&#39;</span><span class="p">,</span> <span class="s1">&#39;UNIT&#39;</span><span class="p">,</span> <span class="s1">&#39;Flag and Footnotes&#39;</span><span class="p">]</span>
@@ -14257,7 +14239,7 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[73]:</div>
+<div class="prompt input_prompt">In&nbsp;[915]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">imm_app</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -14273,7 +14255,7 @@ List of notable events in german history;
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[73]:</div>
+<div class="prompt output_prompt">Out[915]:</div>
 
 
 
@@ -14339,7 +14321,7 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[74]:</div>
+<div class="prompt input_prompt">In&nbsp;[916]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">imm_app</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">],</span><span class="n">imm_app</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">imm_app</span><span class="o">.</span><span class="n">year_month</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">str</span>
@@ -14354,7 +14336,7 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[75]:</div>
+<div class="prompt input_prompt">In&nbsp;[917]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sales</span><span class="p">[</span><span class="s1">&#39;year_month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sales</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">sales</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
@@ -14367,7 +14349,7 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[76]:</div>
+<div class="prompt input_prompt">In&nbsp;[918]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sales</span> <span class="o">=</span> <span class="n">sales</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">imm_app</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;year_month&#39;</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="s1">&#39;_imm&#39;</span><span class="p">})</span>
@@ -14380,7 +14362,7 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[77]:</div>
+<div class="prompt input_prompt">In&nbsp;[919]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cpi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s1">&#39;/data/external_data/cpi_germany_13-15.csv&#39;</span><span class="p">)</span>
@@ -14394,7 +14376,7 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[78]:</div>
+<div class="prompt input_prompt">In&nbsp;[920]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cpi</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">(</span><span class="n">cpi</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">month</span>
@@ -14410,7 +14392,7 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[79]:</div>
+<div class="prompt input_prompt">In&nbsp;[921]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sales</span><span class="p">[</span><span class="s1">&#39;cpi_key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sales</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">sales</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
@@ -14428,7 +14410,7 @@ List of notable events in german history;
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[79]:</div>
+<div class="prompt output_prompt">Out[921]:</div>
 
 
 
@@ -14505,7 +14487,7 @@ List of notable events in german history;
       <td>HE</td>
       <td>2015-31</td>
       <td>2015-08-02</td>
-      <td>45</td>
+      <td>41</td>
       <td>2015</td>
       <td>31</td>
       <td>0</td>
@@ -14539,7 +14521,7 @@ List of notable events in german history;
       <td>HE</td>
       <td>2015-31</td>
       <td>2015-08-02</td>
-      <td>45</td>
+      <td>41</td>
       <td>2015</td>
       <td>31</td>
       <td>0</td>
@@ -14573,7 +14555,7 @@ List of notable events in german history;
       <td>TH</td>
       <td>2015-31</td>
       <td>2015-08-02</td>
-      <td>45</td>
+      <td>41</td>
       <td>2015</td>
       <td>31</td>
       <td>0</td>
@@ -14607,7 +14589,7 @@ List of notable events in german history;
       <td>TH</td>
       <td>2015-31</td>
       <td>2015-08-02</td>
-      <td>45</td>
+      <td>41</td>
       <td>2015</td>
       <td>31</td>
       <td>0</td>
@@ -14641,7 +14623,7 @@ List of notable events in german history;
       <td>NW</td>
       <td>2015-31</td>
       <td>2015-08-02</td>
-      <td>45</td>
+      <td>41</td>
       <td>2015</td>
       <td>31</td>
       <td>0</td>
@@ -14668,7 +14650,7 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[80]:</div>
+<div class="prompt input_prompt">In&nbsp;[922]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">dcol</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;trend_key&#39;</span><span class="p">,</span> <span class="s1">&#39;date_t&#39;</span><span class="p">,</span> <span class="s1">&#39;year_t&#39;</span><span class="p">,</span> <span class="s1">&#39;week_num_t&#39;</span><span class="p">,</span> <span class="s1">&#39;year_month&#39;</span><span class="p">,</span> <span class="s1">&#39;year_imm&#39;</span><span class="p">,</span> <span class="s1">&#39;month_imm&#39;</span><span class="p">,</span> <span class="s1">&#39;date_cpi&#39;</span><span class="p">,</span> <span class="s1">&#39;cpi_key&#39;</span><span class="p">,</span> <span class="s1">&#39;month_cpi&#39;</span><span class="p">,</span> <span class="s1">&#39;year_cpi&#39;</span><span class="p">]</span>
@@ -14686,7 +14668,7 @@ List of notable events in german history;
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[80]:</div>
+<div class="prompt output_prompt">Out[922]:</div>
 
 
 
@@ -14750,7 +14732,7 @@ List of notable events in german history;
       <td>Summer</td>
       <td>3</td>
       <td>HE</td>
-      <td>45</td>
+      <td>41</td>
       <td>0</td>
       <td>39,825</td>
       <td>100.288454</td>
@@ -14773,7 +14755,7 @@ List of notable events in german history;
       <td>Summer</td>
       <td>3</td>
       <td>HE</td>
-      <td>45</td>
+      <td>41</td>
       <td>0</td>
       <td>39,825</td>
       <td>100.288454</td>
@@ -14796,7 +14778,7 @@ List of notable events in german history;
       <td>Summer</td>
       <td>3</td>
       <td>TH</td>
-      <td>45</td>
+      <td>41</td>
       <td>0</td>
       <td>39,825</td>
       <td>100.288454</td>
@@ -14819,7 +14801,7 @@ List of notable events in german history;
       <td>Summer</td>
       <td>3</td>
       <td>TH</td>
-      <td>45</td>
+      <td>41</td>
       <td>0</td>
       <td>39,825</td>
       <td>100.288454</td>
@@ -14842,7 +14824,7 @@ List of notable events in german history;
       <td>Summer</td>
       <td>3</td>
       <td>NW</td>
-      <td>45</td>
+      <td>41</td>
       <td>0</td>
       <td>39,825</td>
       <td>100.288454</td>
@@ -14871,7 +14853,7 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[81]:</div>
+<div class="prompt input_prompt">In&nbsp;[923]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">regmap</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;HE&#39;</span><span class="p">:</span> <span class="s1">&#39;Hessen&#39;</span><span class="p">,</span> <span class="s1">&#39;TH&#39;</span><span class="p">:</span><span class="s1">&#39;Thuringia&#39;</span><span class="p">,</span> <span class="s1">&#39;NW&#39;</span><span class="p">:</span><span class="s1">&#39;North Rhine Westfalia&#39;</span><span class="p">,</span> <span class="s1">&#39;NI&#39;</span><span class="p">:</span><span class="s1">&#39;Lower Saxony&#39;</span><span class="p">,</span> <span class="s1">&#39;SN&#39;</span><span class="p">:</span><span class="s1">&#39;Saxony&#39;</span><span class="p">,</span> <span class="s1">&#39;SH&#39;</span><span class="p">:</span><span class="s1">&#39;Schleswig Holstein&#39;</span><span class="p">,</span> <span class="s1">&#39;BE&#39;</span><span class="p">:</span><span class="s1">&#39;Berlin&#39;</span><span class="p">,</span> <span class="s1">&#39;BY&#39;</span><span class="p">:</span><span class="s1">&#39;Bavaria&#39;</span><span class="p">,</span> <span class="s1">&#39;BW&#39;</span><span class="p">:</span><span class="s1">&#39;Baden-Württemberg&#39;</span><span class="p">,</span> <span class="s1">&#39;RP&#39;</span><span class="p">:</span><span class="s1">&#39;Rhineland-Palatinate&#39;</span><span class="p">,</span> <span class="s1">&#39;ST&#39;</span><span class="p">:</span><span class="s1">&#39;Saxony-Anhalt&#39;</span><span class="p">,</span> <span class="s1">&#39;HH&#39;</span><span class="p">:</span><span class="s1">&#39;Hamburg&#39;</span><span class="p">}</span>
@@ -14885,7 +14867,7 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[82]:</div>
+<div class="prompt input_prompt">In&nbsp;[924]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#getting latitude and longitude for the regions to identify weather station ids</span>
@@ -14903,7 +14885,7 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[83]:</div>
+<div class="prompt input_prompt">In&nbsp;[925]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#getting station ids from open weather</span>
@@ -14918,7 +14900,7 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[84]:</div>
+<div class="prompt input_prompt">In&nbsp;[926]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">weather_stn</span> <span class="o">=</span> <span class="s1">&#39;https://mesonet.agron.iastate.edu/sites/networks.php?network=DE__ASOS&amp;format=csv&amp;nohtml=on&#39;</span>
@@ -14932,7 +14914,7 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[85]:</div>
+<div class="prompt input_prompt">In&nbsp;[927]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">weather_stn</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">weather_stn</span><span class="p">)</span>
@@ -14945,7 +14927,7 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[86]:</div>
+<div class="prompt input_prompt">In&nbsp;[928]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">weather_stn</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -14961,7 +14943,7 @@ List of notable events in german history;
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[86]:</div>
+<div class="prompt output_prompt">Out[928]:</div>
 
 
 
@@ -15055,6 +15037,20 @@ List of notable events in german history;
 </div>
 
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[929]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#weather_data = pd.read_csv(weather_data)</span>
+<span class="c1">#weather_data.to_csv(&#39;german_weather_data.csv&#39;)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
@@ -15068,13 +15064,22 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[933]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#h = geocoders.Nominatim()</span>
-<span class="c1">#for index, row in weather_stn.iterrows():</span>
-<span class="c1">#    res = h.reverse(query=[row[&#39;lat&#39;], row[&#39;lon&#39;]])</span>
-<span class="c1">#    print(res[0])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#get google api key from google</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;get it from google&#39;</span>
+<span class="k">def</span> <span class="nf">rev_code</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://maps.googleapis.com/maps/api/geocode/json?&quot;</span>
+    <span class="n">url</span> <span class="o">+=</span> <span class="s2">&quot;latlng=</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">&amp;sensor=false&amp;key=</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="n">address</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="n">comp</span> <span class="o">=</span> <span class="n">address</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;address_components&#39;</span><span class="p">]</span>
+    <span class="n">ad</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;postal_town&#39;</span><span class="p">,</span> <span class="s1">&#39;administrative_area_level_2&#39;</span><span class="p">,</span> <span class="s1">&#39;administrative_area_level_1&#39;</span><span class="p">,</span> <span class="s1">&#39;country&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">comp</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;types&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span>
+            <span class="n">ad</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;-&quot;</span><span class="o">+</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;short_name&#39;</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">ad</span>
 </pre></div>
 
 </div>
@@ -15084,7 +15089,2093 @@ List of notable events in german history;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[88]:</div>
+<div class="prompt input_prompt">In&nbsp;[934]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">weather_stn</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">weather_stn</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rev_code</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">],</span> <span class="n">key</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[935]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">loc</span> <span class="o">=</span> <span class="n">weather_stn</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">weather_stn</span> <span class="o">=</span> <span class="n">weather_stn</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[936]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">stn_info</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">weather_stn</span><span class="p">)</span>
+<span class="n">stn_info</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="c1">#dropping &#39;2&#39; since it contains only one country information</span>
+<span class="n">stn_info</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1">#stn_info.drop(&#39;location&#39;, axis=1, inplace=True)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Although location mapping can be done in python, mapping a few values in excel with index match and re-importing was easier</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[937]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#stn_info[0].apply(lambda x: [i for i in x.split(&#39;-&#39;) if len(i)&lt;4 else i])</span>
+
+<span class="n">stn_info</span><span class="p">[</span><span class="s1">&#39;loc_codes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stn_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">i</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">4</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)][</span><span class="mi">1</span><span class="p">])</span>
+<span class="c1">#stn_info.to_csv(&#39;stn_info.csv&#39;)</span>
+<span class="n">stn_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="sa">r</span><span class="s1">&#39;/data/external_data/stn_info.csv&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[938]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">stn_info</span><span class="p">[</span><span class="s1">&#39;region_code&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[938]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([&#39;NW&#39;, &#39;TH&#39;, &#39;BY&#39;, &#39;BB&#39;, &#39;BE&#39;, &#39;-&#39;, &#39;NI&#39;, &#39;RP&#39;, &#39;ST&#39;, &#39;BW&#39;, &#39;SN&#39;,
+       &#39;HE&#39;, &#39;HH&#39;, &#39;MV&#39;, &#39;SH&#39;, &#39;Denmark&#39;], dtype=object)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[939]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">weather_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="sa">r</span><span class="s1">&#39;/data/external_data/german_weather_data.csv&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[940]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">weather_data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sno&#39;</span><span class="p">,</span> <span class="s1">&#39;stid&#39;</span><span class="p">,</span> <span class="s1">&#39;valid&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;tmpc&#39;</span><span class="p">,</span> <span class="s1">&#39;relh&#39;</span><span class="p">]</span>
+<span class="n">weather_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[940]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sno</th>
+      <th>stid</th>
+      <th>valid</th>
+      <th>lon</th>
+      <th>lat</th>
+      <th>tmpc</th>
+      <th>relh</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>ETOU</td>
+      <td>2013-01-01 06:16</td>
+      <td>8.3254</td>
+      <td>50.0498</td>
+      <td>6.00</td>
+      <td>81.07</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>ETAD</td>
+      <td>2013-01-01 06:20</td>
+      <td>6.6992</td>
+      <td>49.9802</td>
+      <td>5.00</td>
+      <td>93.24</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>EDDK</td>
+      <td>2013-01-01 06:20</td>
+      <td>7.1586</td>
+      <td>50.8661</td>
+      <td>7.00</td>
+      <td>81.20</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>EDXW</td>
+      <td>2013-01-01 06:20</td>
+      <td>8.3405</td>
+      <td>54.9132</td>
+      <td>6.00</td>
+      <td>100.00</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>EDDV</td>
+      <td>2013-01-01 06:20</td>
+      <td>9.6797</td>
+      <td>52.4658</td>
+      <td>7.00</td>
+      <td>87.09</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[941]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">weather_data</span> <span class="o">=</span> <span class="n">weather_data</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">stn_info</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s1">&#39;stid&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;_l&#39;</span><span class="p">,</span><span class="s1">&#39;_r&#39;</span><span class="p">})</span>
+<span class="n">weather_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[941]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sno</th>
+      <th>stid</th>
+      <th>valid</th>
+      <th>lon_r</th>
+      <th>lat_r</th>
+      <th>tmpc</th>
+      <th>relh</th>
+      <th>station_name</th>
+      <th>lat_l</th>
+      <th>lon_l</th>
+      <th>elev</th>
+      <th>begints</th>
+      <th>iem_network</th>
+      <th>location</th>
+      <th>region_code</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>ETOU</td>
+      <td>2013-01-01 06:16</td>
+      <td>8.3254</td>
+      <td>50.0498</td>
+      <td>6.00</td>
+      <td>81.07</td>
+      <td>WIESBADEN (USA-A</td>
+      <td>50.04982</td>
+      <td>8.3254</td>
+      <td>141.0</td>
+      <td>22/08/11 14:55</td>
+      <td>DE__ASOS</td>
+      <td>Darmstadt-DA|Hessen-HE|Germany-DE</td>
+      <td>HE</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>37</td>
+      <td>ETOU</td>
+      <td>2013-01-01 06:31</td>
+      <td>8.3254</td>
+      <td>50.0498</td>
+      <td>6.00</td>
+      <td>81.07</td>
+      <td>WIESBADEN (USA-A</td>
+      <td>50.04982</td>
+      <td>8.3254</td>
+      <td>141.0</td>
+      <td>22/08/11 14:55</td>
+      <td>DE__ASOS</td>
+      <td>Darmstadt-DA|Hessen-HE|Germany-DE</td>
+      <td>HE</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>50</td>
+      <td>ETOU</td>
+      <td>2013-01-01 06:50</td>
+      <td>8.3254</td>
+      <td>50.0498</td>
+      <td>7.00</td>
+      <td>75.68</td>
+      <td>WIESBADEN (USA-A</td>
+      <td>50.04982</td>
+      <td>8.3254</td>
+      <td>141.0</td>
+      <td>22/08/11 14:55</td>
+      <td>DE__ASOS</td>
+      <td>Darmstadt-DA|Hessen-HE|Germany-DE</td>
+      <td>HE</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>69</td>
+      <td>ETOU</td>
+      <td>2013-01-01 06:51</td>
+      <td>8.3254</td>
+      <td>50.0498</td>
+      <td>7.00</td>
+      <td>75.68</td>
+      <td>WIESBADEN (USA-A</td>
+      <td>50.04982</td>
+      <td>8.3254</td>
+      <td>141.0</td>
+      <td>22/08/11 14:55</td>
+      <td>DE__ASOS</td>
+      <td>Darmstadt-DA|Hessen-HE|Germany-DE</td>
+      <td>HE</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>70</td>
+      <td>ETOU</td>
+      <td>2013-01-01 06:56</td>
+      <td>8.3254</td>
+      <td>50.0498</td>
+      <td>6.00</td>
+      <td>81.07</td>
+      <td>WIESBADEN (USA-A</td>
+      <td>50.04982</td>
+      <td>8.3254</td>
+      <td>141.0</td>
+      <td>22/08/11 14:55</td>
+      <td>DE__ASOS</td>
+      <td>Darmstadt-DA|Hessen-HE|Germany-DE</td>
+      <td>HE</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[942]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">weather_data</span><span class="o">=</span><span class="n">weather_data</span><span class="p">[[</span><span class="s1">&#39;stid&#39;</span><span class="p">,</span> <span class="s1">&#39;valid&#39;</span><span class="p">,</span> <span class="s1">&#39;tmpc&#39;</span><span class="p">,</span> <span class="s1">&#39;relh&#39;</span><span class="p">,</span> <span class="s1">&#39;elev&#39;</span><span class="p">,</span> <span class="s1">&#39;region_code&#39;</span><span class="p">]]</span>
+
+<span class="c1">#considering weather stations at below 300m which is nearly the average elevation of germany (260m)</span>
+<span class="n">weather_data</span> <span class="o">=</span> <span class="n">weather_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">weather_data</span><span class="p">[</span><span class="s1">&#39;elev&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">300</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[943]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">weather_data</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">weather_data</span><span class="p">[</span><span class="s1">&#39;valid&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>aggregating the temperature, relative humidity data by date and region code</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[944]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">weather_data</span><span class="p">[[</span><span class="s1">&#39;tmpc&#39;</span><span class="p">,</span> <span class="s1">&#39;relh&#39;</span><span class="p">,</span> <span class="s1">&#39;elev&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">weather_data</span><span class="p">[[</span><span class="s1">&#39;tmpc&#39;</span><span class="p">,</span> <span class="s1">&#39;relh&#39;</span><span class="p">,</span> <span class="s1">&#39;elev&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;coerce&#39;</span><span class="p">])</span>
+<span class="n">weather_data</span> <span class="o">=</span> <span class="n">weather_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="s1">&#39;region_code&#39;</span><span class="p">])[[</span><span class="s1">&#39;tmpc&#39;</span><span class="p">,</span> <span class="s1">&#39;relh&#39;</span><span class="p">,</span> <span class="s1">&#39;elev&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">weather_data</span> <span class="o">=</span> <span class="n">weather_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">weather_data</span><span class="p">[</span><span class="s1">&#39;region_code&#39;</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39;Denmark&#39;</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">weather_data</span><span class="p">[</span><span class="s1">&#39;region_code&#39;</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39;-&#39;</span><span class="p">)]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[945]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">weather_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[945]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>region_code</th>
+      <th>tmpc</th>
+      <th>relh</th>
+      <th>elev</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>2013-01-01</td>
+      <td>BB</td>
+      <td>6.851852</td>
+      <td>76.368333</td>
+      <td>58.333333</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2013-01-01</td>
+      <td>BE</td>
+      <td>6.527778</td>
+      <td>83.007500</td>
+      <td>37.000000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2013-01-01</td>
+      <td>BW</td>
+      <td>7.032258</td>
+      <td>80.668387</td>
+      <td>124.000000</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2013-01-01</td>
+      <td>HE</td>
+      <td>6.250000</td>
+      <td>84.523934</td>
+      <td>125.491803</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2013-01-01</td>
+      <td>HH</td>
+      <td>6.289474</td>
+      <td>95.596053</td>
+      <td>16.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[946]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">weather_data</span><span class="o">.</span><span class="n">region_code</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[946]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([&#39;BB&#39;, &#39;BE&#39;, &#39;BW&#39;, &#39;HE&#39;, &#39;HH&#39;, &#39;MV&#39;, &#39;NI&#39;, &#39;NW&#39;, &#39;RP&#39;, &#39;SH&#39;, &#39;SN&#39;,
+       &#39;ST&#39;, &#39;TH&#39;], dtype=object)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[947]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sales</span><span class="o">.</span><span class="n">mapped_region</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[947]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([&#39;Hessen&#39;, &#39;Thuringia&#39;, &#39;North Rhine Westfalia&#39;, &#39;Lower Saxony&#39;,
+       &#39;Saxony&#39;, &#39;Schleswig Holstein&#39;, &#39;Berlin&#39;, &#39;Bavaria&#39;,
+       &#39;Baden-Württemberg&#39;, &#39;Rhineland-Palatinate&#39;, &#39;Saxony-Anhalt&#39;,
+       &#39;Hamburg&#39;], dtype=object)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[948]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">state_map</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;BB&#39;</span><span class="p">:</span><span class="s1">&#39;Brandenburg&#39;</span><span class="p">,</span> <span class="s1">&#39;BE&#39;</span><span class="p">:</span><span class="s1">&#39;Berlin&#39;</span><span class="p">,</span> <span class="s1">&#39;BW&#39;</span><span class="p">:</span><span class="s1">&#39;Baden-Württemberg&#39;</span><span class="p">,</span> <span class="s1">&#39;HE&#39;</span><span class="p">:</span><span class="s1">&#39;Hessen&#39;</span><span class="p">,</span> <span class="s1">&#39;HH&#39;</span><span class="p">:</span><span class="s1">&#39;Hamburg&#39;</span><span class="p">,</span> <span class="s1">&#39;MV&#39;</span><span class="p">:</span><span class="s1">&#39;Mecklenburg-Vorpommern&#39;</span><span class="p">,</span> <span class="s1">&#39;NI&#39;</span><span class="p">:</span><span class="s1">&#39;Lower Saxony&#39;</span><span class="p">,</span> <span class="s1">&#39;NW&#39;</span><span class="p">:</span><span class="s1">&#39;North Rhine Westfalia&#39;</span><span class="p">,</span> <span class="s1">&#39;RP&#39;</span><span class="p">:</span><span class="s1">&#39;Rhineland-Palatinate&#39;</span><span class="p">,</span> <span class="s1">&#39;SH&#39;</span><span class="p">:</span><span class="s1">&#39;Schleswig Holstein&#39;</span><span class="p">,</span> <span class="s1">&#39;SN&#39;</span><span class="p">:</span><span class="s1">&#39;Saxony&#39;</span><span class="p">,</span><span class="s1">&#39;ST&#39;</span><span class="p">:</span><span class="s1">&#39;Saxony-Anhalt&#39;</span><span class="p">,</span> <span class="s1">&#39;TH&#39;</span><span class="p">:</span><span class="s1">&#39;Thuringia&#39;</span><span class="p">}</span>
+<span class="n">weather_data</span><span class="p">[</span><span class="s1">&#39;region_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">weather_data</span><span class="o">.</span><span class="n">region_code</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">state_map</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[949]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">weather_data</span><span class="o">.</span><span class="n">region_name</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[949]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([&#39;Brandenburg&#39;, &#39;Berlin&#39;, &#39;Baden-Württemberg&#39;, &#39;Hessen&#39;, &#39;Hamburg&#39;,
+       &#39;Mecklenburg-Vorpommern&#39;, &#39;Lower Saxony&#39;, &#39;North Rhine Westfalia&#39;,
+       &#39;Rhineland-Palatinate&#39;, &#39;Schleswig Holstein&#39;, &#39;Saxony&#39;,
+       &#39;Saxony-Anhalt&#39;, &#39;Thuringia&#39;], dtype=object)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Bavaria is missing from the weather data so an alternate state (Baden-Württemberg) close to bavaria is mapped to it (bavaria)</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[950]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">weather_bavaria</span> <span class="o">=</span> <span class="n">weather_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">weather_data</span><span class="p">[</span><span class="s1">&#39;region_name&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Baden-Württemberg&#39;</span><span class="p">]</span>
+<span class="n">weather_bavaria</span><span class="p">[</span><span class="s1">&#39;region_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Bavaria&#39;</span>
+<span class="n">weather_bavaria</span><span class="p">[</span><span class="s1">&#39;region_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;BY&#39;</span>
+<span class="n">weather_data</span> <span class="o">=</span> <span class="n">weather_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">weather_bavaria</span><span class="p">)</span>
+<span class="n">weather_data</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">weather_data</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;-&quot;</span><span class="o">+</span><span class="n">weather_data</span><span class="p">[</span><span class="s1">&#39;region_name&#39;</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[951]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">weather_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[951]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>region_code</th>
+      <th>tmpc</th>
+      <th>relh</th>
+      <th>elev</th>
+      <th>region_name</th>
+      <th>key</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>2013-01-01</td>
+      <td>BB</td>
+      <td>6.851852</td>
+      <td>76.368333</td>
+      <td>58.333333</td>
+      <td>Brandenburg</td>
+      <td>2013-01-01-Brandenburg</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2013-01-01</td>
+      <td>BE</td>
+      <td>6.527778</td>
+      <td>83.007500</td>
+      <td>37.000000</td>
+      <td>Berlin</td>
+      <td>2013-01-01-Berlin</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2013-01-01</td>
+      <td>BW</td>
+      <td>7.032258</td>
+      <td>80.668387</td>
+      <td>124.000000</td>
+      <td>Baden-Württemberg</td>
+      <td>2013-01-01-Baden-Württemberg</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2013-01-01</td>
+      <td>HE</td>
+      <td>6.250000</td>
+      <td>84.523934</td>
+      <td>125.491803</td>
+      <td>Hessen</td>
+      <td>2013-01-01-Hessen</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2013-01-01</td>
+      <td>HH</td>
+      <td>6.289474</td>
+      <td>95.596053</td>
+      <td>16.000000</td>
+      <td>Hamburg</td>
+      <td>2013-01-01-Hamburg</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[952]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sales</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sales</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;-&quot;</span><span class="o">+</span><span class="n">sales</span><span class="p">[</span><span class="s1">&#39;mapped_region&#39;</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[953]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sales</span> <span class="o">=</span> <span class="n">sales</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">weather_data</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;_s&#39;</span><span class="p">,</span> <span class="s1">&#39;_w&#39;</span><span class="p">})</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[954]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sales</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[954]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Index([&#39;Store&#39;, &#39;date_s&#39;, &#39;Sales&#39;, &#39;Customers&#39;, &#39;Open&#39;, &#39;Promo&#39;,
+       &#39;StateHoliday&#39;, &#39;SchoolHoliday&#39;, &#39;year&#39;, &#39;day&#39;, &#39;iso_weeknum&#39;,
+       &#39;weekday&#39;, &#39;month&#39;, &#39;seasons&#39;, &#39;quarter&#39;, &#39;mapped_region&#39;, &#39;google_svi&#39;,
+       &#39;wc_days&#39;, &#39;num_asy_app&#39;, &#39;cpi&#39;, &#39;key&#39;, &#39;date_w&#39;, &#39;region_code&#39;, &#39;tmpc&#39;,
+       &#39;relh&#39;, &#39;elev&#39;, &#39;region_name&#39;],
+      dtype=&#39;object&#39;)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[955]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sales</span> <span class="o">=</span> <span class="n">sales</span><span class="p">[[</span><span class="s1">&#39;Store&#39;</span><span class="p">,</span> <span class="s1">&#39;date_s&#39;</span><span class="p">,</span> <span class="s1">&#39;Sales&#39;</span><span class="p">,</span> <span class="s1">&#39;Customers&#39;</span><span class="p">,</span> <span class="s1">&#39;Open&#39;</span><span class="p">,</span> <span class="s1">&#39;Promo&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;StateHoliday&#39;</span><span class="p">,</span> <span class="s1">&#39;SchoolHoliday&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;day&#39;</span><span class="p">,</span> <span class="s1">&#39;iso_weeknum&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;weekday&#39;</span><span class="p">,</span> <span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="s1">&#39;seasons&#39;</span><span class="p">,</span> <span class="s1">&#39;quarter&#39;</span><span class="p">,</span> <span class="s1">&#39;mapped_region&#39;</span><span class="p">,</span> <span class="s1">&#39;google_svi&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;wc_days&#39;</span><span class="p">,</span> <span class="s1">&#39;num_asy_app&#39;</span><span class="p">,</span> <span class="s1">&#39;cpi&#39;</span><span class="p">,</span> <span class="s1">&#39;tmpc&#39;</span><span class="p">,</span> <span class="s1">&#39;relh&#39;</span><span class="p">]]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[956]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sales</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[956]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Store</th>
+      <th>date_s</th>
+      <th>Sales</th>
+      <th>Customers</th>
+      <th>Open</th>
+      <th>Promo</th>
+      <th>StateHoliday</th>
+      <th>SchoolHoliday</th>
+      <th>year</th>
+      <th>day</th>
+      <th>iso_weeknum</th>
+      <th>weekday</th>
+      <th>month</th>
+      <th>seasons</th>
+      <th>quarter</th>
+      <th>mapped_region</th>
+      <th>google_svi</th>
+      <th>wc_days</th>
+      <th>num_asy_app</th>
+      <th>cpi</th>
+      <th>tmpc</th>
+      <th>relh</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>2015-07-31</td>
+      <td>5263</td>
+      <td>555</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2015</td>
+      <td>31</td>
+      <td>31</td>
+      <td>Friday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>41</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>16.296894</td>
+      <td>54.272174</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2015-07-31</td>
+      <td>5263</td>
+      <td>555</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2015</td>
+      <td>31</td>
+      <td>31</td>
+      <td>Friday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>41</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>16.296894</td>
+      <td>54.272174</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>56</td>
+      <td>2015-07-31</td>
+      <td>10022</td>
+      <td>619</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2015</td>
+      <td>31</td>
+      <td>31</td>
+      <td>Friday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>41</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>16.296894</td>
+      <td>54.272174</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>56</td>
+      <td>2015-07-31</td>
+      <td>10022</td>
+      <td>619</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2015</td>
+      <td>31</td>
+      <td>31</td>
+      <td>Friday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>41</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>16.296894</td>
+      <td>54.272174</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>69</td>
+      <td>2015-07-31</td>
+      <td>11204</td>
+      <td>1371</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2015</td>
+      <td>31</td>
+      <td>31</td>
+      <td>Friday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>41</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>16.296894</td>
+      <td>54.272174</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>All exogenous data have been mined and included in the creates ADS. The store level data needs to modified and merged with the above sales dataset</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><br></p>
+<p><h3>
+Modifying Store Level data
+</h3></p>
+<hr>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[957]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">store</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s1">&#39;/data/raw_data/store.csv&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>converting the provided date/period information to date object, after which the duration for which the promo and competition is active relative to the date of sale is calculated</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[958]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">store</span><span class="p">[</span><span class="s1">&#39;CompetitionOpenSinceMonth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">store</span><span class="p">[</span><span class="s1">&#39;CompetitionOpenSinceMonth&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">store</span><span class="p">[</span><span class="s1">&#39;CompetitionOpenSinceYear&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">store</span><span class="p">[</span><span class="s1">&#39;CompetitionOpenSinceYear&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">store</span><span class="p">[</span><span class="s1">&#39;Promo2SinceWeek&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">store</span><span class="p">[</span><span class="s1">&#39;Promo2SinceWeek&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">store</span><span class="p">[</span><span class="s1">&#39;Promo2SinceYear&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">store</span><span class="p">[</span><span class="s1">&#39;Promo2SinceYear&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">store</span><span class="p">[</span><span class="s1">&#39;competition_since_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">store</span><span class="p">[</span><span class="s1">&#39;CompetitionOpenSinceYear&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;-&#39;</span><span class="o">+</span><span class="n">store</span><span class="p">[</span><span class="s1">&#39;CompetitionOpenSinceMonth&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;-01&#39;</span>
+<span class="n">store</span><span class="p">[</span><span class="s1">&#39;competition_since_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">store</span><span class="p">[</span><span class="s1">&#39;competition_since_date&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">store</span><span class="p">[</span><span class="s1">&#39;promo_since_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">store</span><span class="p">[</span><span class="s1">&#39;Promo2SinceYear&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;-&#39;</span><span class="o">+</span><span class="n">store</span><span class="p">[</span><span class="s1">&#39;Promo2SinceWeek&#39;</span><span class="p">]</span>
+<span class="n">store</span><span class="p">[</span><span class="s1">&#39;promo_since_date&#39;</span><span class="p">][</span><span class="n">store</span><span class="p">[</span><span class="s1">&#39;promo_since_date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)]</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">NaT</span>
+<span class="n">store</span><span class="p">[</span><span class="s1">&#39;promo_since_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">store</span><span class="p">[</span><span class="s1">&#39;promo_since_date&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;-0&#39;</span><span class="p">,</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;%Y-%W-%w&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[959]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">store</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[959]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Index([&#39;Store&#39;, &#39;StoreType&#39;, &#39;Assortment&#39;, &#39;CompetitionDistance&#39;,
+       &#39;CompetitionOpenSinceMonth&#39;, &#39;CompetitionOpenSinceYear&#39;, &#39;Promo2&#39;,
+       &#39;Promo2SinceWeek&#39;, &#39;Promo2SinceYear&#39;, &#39;PromoInterval&#39;,
+       &#39;competition_since_date&#39;, &#39;promo_since_date&#39;],
+      dtype=&#39;object&#39;)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[960]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">store</span> <span class="o">=</span> <span class="n">store</span><span class="p">[[</span><span class="s1">&#39;Store&#39;</span><span class="p">,</span> <span class="s1">&#39;StoreType&#39;</span><span class="p">,</span> <span class="s1">&#39;Assortment&#39;</span><span class="p">,</span> <span class="s1">&#39;CompetitionDistance&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;PromoInterval&#39;</span><span class="p">,</span><span class="s1">&#39;competition_since_date&#39;</span><span class="p">,</span> <span class="s1">&#39;promo_since_date&#39;</span><span class="p">]]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[961]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">store</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[961]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Store</th>
+      <th>StoreType</th>
+      <th>Assortment</th>
+      <th>CompetitionDistance</th>
+      <th>PromoInterval</th>
+      <th>competition_since_date</th>
+      <th>promo_since_date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>a</td>
+      <td>a</td>
+      <td>570.0</td>
+      <td>Jan,Apr,Jul,Oct</td>
+      <td>2007-11-01</td>
+      <td>2010-04-04</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>a</td>
+      <td>a</td>
+      <td>14130.0</td>
+      <td>Jan,Apr,Jul,Oct</td>
+      <td>2006-12-01</td>
+      <td>2011-04-10</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>c</td>
+      <td>c</td>
+      <td>620.0</td>
+      <td>NaN</td>
+      <td>2009-09-01</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>a</td>
+      <td>a</td>
+      <td>29910.0</td>
+      <td>NaN</td>
+      <td>2015-04-01</td>
+      <td>NaT</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[962]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sales_copy</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">sales</span><span class="p">)</span>
+<span class="n">sales_copy</span> <span class="o">=</span> <span class="n">sales_copy</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;Store&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;_sal&#39;</span><span class="p">,</span> <span class="s1">&#39;_sto&#39;</span><span class="p">})</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[963]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sales_copy</span><span class="p">[</span><span class="s1">&#39;days_since_competition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sales_copy</span><span class="p">[</span><span class="s1">&#39;competition_since_date&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">sales_copy</span><span class="p">[</span><span class="s1">&#39;date_s&#39;</span><span class="p">]</span>
+<span class="n">sales_copy</span><span class="p">[</span><span class="s1">&#39;days_since_promo&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sales_copy</span><span class="p">[</span><span class="s1">&#39;date_s&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">sales_copy</span><span class="p">[</span><span class="s1">&#39;promo_since_date&#39;</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[964]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sales_copy</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[964]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Store</th>
+      <th>date_s</th>
+      <th>Sales</th>
+      <th>Customers</th>
+      <th>Open</th>
+      <th>Promo</th>
+      <th>StateHoliday</th>
+      <th>SchoolHoliday</th>
+      <th>year</th>
+      <th>day</th>
+      <th>iso_weeknum</th>
+      <th>weekday</th>
+      <th>month</th>
+      <th>seasons</th>
+      <th>quarter</th>
+      <th>mapped_region</th>
+      <th>google_svi</th>
+      <th>wc_days</th>
+      <th>num_asy_app</th>
+      <th>cpi</th>
+      <th>tmpc</th>
+      <th>relh</th>
+      <th>StoreType</th>
+      <th>Assortment</th>
+      <th>CompetitionDistance</th>
+      <th>PromoInterval</th>
+      <th>competition_since_date</th>
+      <th>promo_since_date</th>
+      <th>days_since_competition</th>
+      <th>days_since_promo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>2015-07-31</td>
+      <td>5263</td>
+      <td>555</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2015</td>
+      <td>31</td>
+      <td>31</td>
+      <td>Friday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>41</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>16.296894</td>
+      <td>54.272174</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2524 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2015-07-31</td>
+      <td>5263</td>
+      <td>555</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2015</td>
+      <td>31</td>
+      <td>31</td>
+      <td>Friday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>41</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>16.296894</td>
+      <td>54.272174</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2524 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>2015-07-30</td>
+      <td>5020</td>
+      <td>546</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2015</td>
+      <td>30</td>
+      <td>31</td>
+      <td>Thursday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>41</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>15.944318</td>
+      <td>56.774830</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2523 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>2015-07-30</td>
+      <td>5020</td>
+      <td>546</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2015</td>
+      <td>30</td>
+      <td>31</td>
+      <td>Thursday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>41</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>15.944318</td>
+      <td>56.774830</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2523 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>2015-07-29</td>
+      <td>4782</td>
+      <td>523</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2015</td>
+      <td>29</td>
+      <td>31</td>
+      <td>Wednesday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>41</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>16.233511</td>
+      <td>58.021436</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2522 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1</td>
+      <td>2015-07-29</td>
+      <td>4782</td>
+      <td>523</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2015</td>
+      <td>29</td>
+      <td>31</td>
+      <td>Wednesday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>41</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>16.233511</td>
+      <td>58.021436</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2522 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1</td>
+      <td>2015-07-28</td>
+      <td>5011</td>
+      <td>560</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2015</td>
+      <td>28</td>
+      <td>31</td>
+      <td>Tuesday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>41</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>17.530208</td>
+      <td>53.689010</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2521 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1</td>
+      <td>2015-07-28</td>
+      <td>5011</td>
+      <td>560</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2015</td>
+      <td>28</td>
+      <td>31</td>
+      <td>Tuesday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>41</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>17.530208</td>
+      <td>53.689010</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2521 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1</td>
+      <td>2015-07-27</td>
+      <td>6102</td>
+      <td>612</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2015</td>
+      <td>27</td>
+      <td>31</td>
+      <td>Monday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>41</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>17.680269</td>
+      <td>73.662870</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2520 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1</td>
+      <td>2015-07-27</td>
+      <td>6102</td>
+      <td>612</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2015</td>
+      <td>27</td>
+      <td>31</td>
+      <td>Monday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>41</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>17.680269</td>
+      <td>73.662870</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2520 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>1</td>
+      <td>2015-07-26</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2015</td>
+      <td>26</td>
+      <td>30</td>
+      <td>Sunday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>31</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>16.514935</td>
+      <td>57.270714</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2519 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>1</td>
+      <td>2015-07-26</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2015</td>
+      <td>26</td>
+      <td>30</td>
+      <td>Sunday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>31</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>16.514935</td>
+      <td>57.270714</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2519 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>1</td>
+      <td>2015-07-25</td>
+      <td>4364</td>
+      <td>500</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2015</td>
+      <td>25</td>
+      <td>30</td>
+      <td>Saturday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>31</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>18.150000</td>
+      <td>71.016950</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2518 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>1</td>
+      <td>2015-07-25</td>
+      <td>4364</td>
+      <td>500</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2015</td>
+      <td>25</td>
+      <td>30</td>
+      <td>Saturday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>31</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>18.150000</td>
+      <td>71.016950</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2518 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>1</td>
+      <td>2015-07-24</td>
+      <td>3706</td>
+      <td>459</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2015</td>
+      <td>24</td>
+      <td>30</td>
+      <td>Friday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>31</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>23.505114</td>
+      <td>54.024375</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2517 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>1</td>
+      <td>2015-07-24</td>
+      <td>3706</td>
+      <td>459</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2015</td>
+      <td>24</td>
+      <td>30</td>
+      <td>Friday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>31</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>23.505114</td>
+      <td>54.024375</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2517 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>1</td>
+      <td>2015-07-23</td>
+      <td>3769</td>
+      <td>503</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2015</td>
+      <td>23</td>
+      <td>30</td>
+      <td>Thursday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>31</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>21.273457</td>
+      <td>52.046852</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2516 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>1</td>
+      <td>2015-07-23</td>
+      <td>3769</td>
+      <td>503</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2015</td>
+      <td>23</td>
+      <td>30</td>
+      <td>Thursday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>31</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>21.273457</td>
+      <td>52.046852</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2516 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>1</td>
+      <td>2015-07-22</td>
+      <td>3464</td>
+      <td>463</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2015</td>
+      <td>22</td>
+      <td>30</td>
+      <td>Wednesday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>31</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>25.276331</td>
+      <td>61.566331</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2515 days</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>1</td>
+      <td>2015-07-22</td>
+      <td>3464</td>
+      <td>463</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2015</td>
+      <td>22</td>
+      <td>30</td>
+      <td>Wednesday</td>
+      <td>July</td>
+      <td>Summer</td>
+      <td>3</td>
+      <td>Hessen</td>
+      <td>31</td>
+      <td>0</td>
+      <td>39,825</td>
+      <td>100.288454</td>
+      <td>25.276331</td>
+      <td>61.566331</td>
+      <td>c</td>
+      <td>a</td>
+      <td>1270.0</td>
+      <td>NaN</td>
+      <td>2008-09-01</td>
+      <td>NaT</td>
+      <td>-2515 days</td>
+      <td>NaT</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[965]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>jupyter nbconvert --to html ads_creation.ipynb
@@ -15106,7 +17197,7 @@ List of notable events in german history;
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook ads_creation.ipynb to html
-[NbConvertApp] Writing 421277 bytes to ads_creation.html
+[NbConvertApp] Writing 452103 bytes to ads_creation.html
 </pre>
 </div>
 </div>
